@@ -14,6 +14,8 @@ Title: Search repos by username
 - Repos with open issues will display an X with the number of issues or pull requests.
 
 ````
+
+````
 Title: See list of all open issues
 
   **Description**
@@ -22,6 +24,7 @@ Title: See list of all open issues
 
   - The second HTML page will display a list of all open issues for that repository.
 
+````
 ````
  Title: Search for featured repos
 
@@ -33,19 +36,3 @@ Title: See list of all open issues
 ````
 
 
-````
-
-
-````
-
-
-````
-
-
-````
-
-
-````
-
-
-````
