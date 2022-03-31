@@ -21,6 +21,12 @@ var formSubmitHandler = function(event) {
 var displayRepos = function(repos, searchTerm) {
     console.log(repos);
     console.log(searchTerm);
+
+    if (repos.length === 0) {
+        repoContainerEl.textContent = "No repositories found.";
+        return;
+      }
+
     // clear old content
     repoContainerEl.textContent = "";
     repoSearchTerm.textContent = searchTerm;
@@ -52,8 +58,8 @@ var displayRepos = function(repos, searchTerm) {
         statusEl.innerHTML = "<i class='fas fa-check-square status-icon icon-success'></i>";
         }
 
-// append to container
-repoEl.appendChild(statusEl);
+        // append to container
+        repoEl.appendChild(statusEl);
 
 
 
@@ -72,12 +78,19 @@ var getUserRepos = function(user) {
 
     fetch(apiUrl)
         .then(function(response){
+           if (response.ok) {
             response.json()
             .then(function(data){
                 console.log(data);
                 displayRepos(data, user);
             });
-        });
+        } else {
+            Alert ("Error: Github User not found");
+        }
+        })
+        .catch(function(error){
+            
+        })
   };
   
   userFormEl.addEventListener("submit", formSubmitHandler);
