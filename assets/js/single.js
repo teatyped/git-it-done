@@ -1,5 +1,5 @@
 var issueContainerEl = document.querySelector("#issues-container");
-
+var limitWarningEl = document.querySelector("#limit-warning");
 
 var getRepoIssues = function (repo) {
   console.log(repo);
@@ -11,6 +11,12 @@ var getRepoIssues = function (repo) {
       response.json().then(function (data) {
         // pass response data to dom function
         displayIssues(data);
+
+        if(response.headers.get("Link")){
+            console.log("repo has more then 30 issues")
+            displayWarning(repo)
+        }
+
       });
     } else {
       alert("There was a problem with your request!");
@@ -19,11 +25,10 @@ var getRepoIssues = function (repo) {
 };
 
 var displayIssues = function (issues) {
-
-    if(issues.length === 0){
-        issueContainerEl.textContent = "This repo has no open issues!";
-        return;
-    }
+  if (issues.length === 0) {
+    issueContainerEl.textContent = "This repo has no open issues!";
+    return;
+  }
 
   for (var i = 0; i < issues.length; i++) {
     // create a link element to tak user to the issues on github
@@ -39,20 +44,32 @@ var displayIssues = function (issues) {
     issueEl.appendChild(titleEl);
 
     //create a type element
-    var typeEl= document.createElement("span");
+    var typeEl = document.createElement("span");
 
     // check if issues is an actual issues or pull request
-    if (issues[i].pull_request){
-        typeEl.textContent = "(Pull request)";
+    if (issues[i].pull_request) {
+      typeEl.textContent = "(Pull request)";
     } else {
-        typeEl.textContent = "(Issue)";
+      typeEl.textContent = "(Issue)";
     }
     // append to container
     issueEl.appendChild(typeEl);
     issueContainerEl.appendChild(issueEl);
+  } // loop
+};
 
-  }// loop
+var displayWarning = function(repo){
+    // adde text to warning container
+    limitWarningEl.textContent =" To see more than 30 issues, visit ";
+
+    var linkEl = document.createElement("a");
+    linkEl.textContent = "See More Issues on GitHub.com";
+    linkEl.setAttribute("href", "https://github.com/" + repo + "/issues");
+    linkEl.setAttribute("target", "_blank");
+  
+    // append to warning container
+    limitWarningEl.appendChild(linkEl);
 };
 
 
-getRepoIssues("facebook/react")
+getRepoIssues("facebook/react");
